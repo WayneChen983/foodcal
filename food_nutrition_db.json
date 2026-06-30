@@ -1,0 +1,535 @@
+{
+    "__comment": "Units: Per 1 cm3. Values = (Density * Nutrient_per_100g) / 100",
+    "rice_white": {
+        "display_name": "白飯 (White Rice)",
+        "kcal_cm3": 1.1,
+        "protein_g_cm3": 0.023,
+        "fat_g_cm3": 0.003,
+        "carbs_g_cm3": 0.238
+    },
+    "rice_brown": {
+        "display_name": "糙米飯 (Brown Rice)",
+        "kcal_cm3": 1.15,
+        "protein_g_cm3": 0.032,
+        "fat_g_cm3": 0.008,
+        "carbs_g_cm3": 0.224
+    },
+    "rice_purple": {
+        "display_name": "紫米飯 (Purple Rice)",
+        "kcal_cm3": 1.25,
+        "protein_g_cm3": 0.04,
+        "fat_g_cm3": 0.012,
+        "carbs_g_cm3": 0.24
+    },
+    "gruel": {
+        "display_name": "稀飯/粥 (Rice Gruel)",
+        "kcal_cm3": 0.45,
+        "protein_g_cm3": 0.008,
+        "fat_g_cm3": 0.001,
+        "carbs_g_cm3": 0.1
+    },
+    "plain_noodles": {
+        "display_name": "白麵條 (Plain Noodles)",
+        "kcal_cm3": 1.05,
+        "protein_g_cm3": 0.035,
+        "fat_g_cm3": 0.005,
+        "carbs_g_cm3": 0.21
+    },
+    "oil_noodles": {
+        "display_name": "油麵 (Oil Noodles)",
+        "kcal_cm3": 1.2,
+        "protein_g_cm3": 0.04,
+        "fat_g_cm3": 0.02,
+        "carbs_g_cm3": 0.22
+    },
+    "rice_vermicelli": {
+        "display_name": "炒米粉 (Stir-fried Rice Vermicelli)",
+        "kcal_cm3": 1.35,
+        "protein_g_cm3": 0.03,
+        "fat_g_cm3": 0.045,
+        "carbs_g_cm3": 0.2
+    },
+    "glass_noodles": {
+        "display_name": "冬粉 (Glass Noodles)",
+        "kcal_cm3": 0.95,
+        "protein_g_cm3": 0.002,
+        "fat_g_cm3": 0.001,
+        "carbs_g_cm3": 0.23
+    },
+    "mantou_white": {
+        "display_name": "白饅頭 (White Mantou)",
+        "kcal_cm3": 0.95,
+        "protein_g_cm3": 0.03,
+        "fat_g_cm3": 0.005,
+        "carbs_g_cm3": 0.19
+    },
+    "sweet_potato": {
+        "display_name": "蒸地瓜 (Sweet Potato)",
+        "kcal_cm3": 0.77,
+        "protein_g_cm3": 0.014,
+        "fat_g_cm3": 0.001,
+        "carbs_g_cm3": 0.18
+    },
+    "pumpkin": {
+        "display_name": "蒸南瓜 (Pumpkin)",
+        "kcal_cm3": 0.45,
+        "protein_g_cm3": 0.01,
+        "fat_g_cm3": 0.001,
+        "carbs_g_cm3": 0.1
+    },
+    "taro": {
+        "display_name": "芋頭 (Taro)",
+        "kcal_cm3": 0.85,
+        "protein_g_cm3": 0.015,
+        "fat_g_cm3": 0.002,
+        "carbs_g_cm3": 0.19
+    },
+    "pork_chop_fried": {
+        "display_name": "炸排骨 (Fried Pork Chop)",
+        "kcal_cm3": 2.85,
+        "protein_g_cm3": 0.18,
+        "fat_g_cm3": 0.19,
+        "carbs_g_cm3": 0.1
+    },
+    "pork_chop_braised": {
+        "display_name": "滷排骨 (Braised Pork Chop)",
+        "kcal_cm3": 2.2,
+        "protein_g_cm3": 0.2,
+        "fat_g_cm3": 0.14,
+        "carbs_g_cm3": 0.02
+    },
+    "red_yeast_pork": {
+        "display_name": "紅糟肉 (Red Yeast Pork)",
+        "kcal_cm3": 3.1,
+        "protein_g_cm3": 0.14,
+        "fat_g_cm3": 0.23,
+        "carbs_g_cm3": 0.11
+    },
+    "pork_belly_braised": {
+        "display_name": "焢肉 (Braised Pork Belly)",
+        "kcal_cm3": 3.5,
+        "protein_g_cm3": 0.14,
+        "fat_g_cm3": 0.32,
+        "carbs_g_cm3": 0.02
+    },
+    "pork_mince_braised": {
+        "display_name": "滷肉燥 (Braised Pork Mince)",
+        "kcal_cm3": 3.2,
+        "protein_g_cm3": 0.15,
+        "fat_g_cm3": 0.28,
+        "carbs_g_cm3": 0.02
+    },
+    "pork_scallion_stir_fried": {
+        "display_name": "蔥爆豬肉 (Stir-fried Pork w/ Scallions)",
+        "kcal_cm3": 1.95,
+        "protein_g_cm3": 0.16,
+        "fat_g_cm3": 0.12,
+        "carbs_g_cm3": 0.04
+    },
+    "sweet_sour_pork": {
+        "display_name": "糖醋排骨 (Sweet & Sour Pork)",
+        "kcal_cm3": 2.45,
+        "protein_g_cm3": 0.13,
+        "fat_g_cm3": 0.14,
+        "carbs_g_cm3": 0.16
+    },
+    "pork_strip_fried": {
+        "display_name": "炸肉條 (Fried Pork Strip)",
+        "kcal_cm3": 2.9,
+        "protein_g_cm3": 0.15,
+        "fat_g_cm3": 0.21,
+        "carbs_g_cm3": 0.09
+    },
+    "chicken_leg_fried": {
+        "display_name": "炸雞腿 (Fried Chicken Leg)",
+        "kcal_cm3": 2.3,
+        "protein_g_cm3": 0.16,
+        "fat_g_cm3": 0.14,
+        "carbs_g_cm3": 0.08
+    },
+    "chicken_leg_braised": {
+        "display_name": "滷雞腿 (Braised Chicken Leg)",
+        "kcal_cm3": 1.75,
+        "protein_g_cm3": 0.18,
+        "fat_g_cm3": 0.1,
+        "carbs_g_cm3": 0.02
+    },
+    "three_cup_chicken": {
+        "display_name": "三杯雞 (Three-cup Chicken)",
+        "kcal_cm3": 1.95,
+        "protein_g_cm3": 0.16,
+        "fat_g_cm3": 0.12,
+        "carbs_g_cm3": 0.05
+    },
+    "gong_bao_chicken": {
+        "display_name": "宮保雞丁 (Gong Bao Chicken)",
+        "kcal_cm3": 1.85,
+        "protein_g_cm3": 0.155,
+        "fat_g_cm3": 0.11,
+        "carbs_g_cm3": 0.07
+    },
+    "salt_pepper_chicken": {
+        "display_name": "鹽酥雞 (Salt & Pepper Chicken)",
+        "kcal_cm3": 2.95,
+        "protein_g_cm3": 0.145,
+        "fat_g_cm3": 0.22,
+        "carbs_g_cm3": 0.1
+    },
+    "scallion_oil_chicken": {
+        "display_name": "蔥油雞 (Chicken w/ Scallion Oil)",
+        "kcal_cm3": 1.65,
+        "protein_g_cm3": 0.19,
+        "fat_g_cm3": 0.09,
+        "carbs_g_cm3": 0.01
+    },
+    "chicken_curry": {
+        "display_name": "咖哩雞 (Chicken Curry)",
+        "kcal_cm3": 1.45,
+        "protein_g_cm3": 0.095,
+        "fat_g_cm3": 0.075,
+        "carbs_g_cm3": 0.1
+    },
+    "beef_pepper_stir_fried": {
+        "display_name": "青椒炒牛肉 (Beef w/ Green Pepper)",
+        "kcal_cm3": 1.55,
+        "protein_g_cm3": 0.14,
+        "fat_g_cm3": 0.09,
+        "carbs_g_cm3": 0.045
+    },
+    "beef_shank_braised": {
+        "display_name": "滷牛腱 (Braised Beef Shank)",
+        "kcal_cm3": 1.75,
+        "protein_g_cm3": 0.26,
+        "fat_g_cm3": 0.07,
+        "carbs_g_cm3": 0.01
+    },
+    "beef_scallion_stir_fried": {
+        "display_name": "蔥爆牛肉 (Stir-fried Beef w/ Scallions)",
+        "kcal_cm3": 1.85,
+        "protein_g_cm3": 0.15,
+        "fat_g_cm3": 0.11,
+        "carbs_g_cm3": 0.06
+    },
+    "lamb_water_spinach": {
+        "display_name": "空心菜炒羊肉 (Lamb w/ Water Spinach)",
+        "kcal_cm3": 1.65,
+        "protein_g_cm3": 0.135,
+        "fat_g_cm3": 0.105,
+        "carbs_g_cm3": 0.035
+    },
+    "fish_steamed": {
+        "display_name": "蒸魚 (Steamed Fish)",
+        "kcal_cm3": 0.95,
+        "protein_g_cm3": 0.18,
+        "fat_g_cm3": 0.02,
+        "carbs_g_cm3": 0.005
+    },
+    "fish_fillet_fried": {
+        "display_name": "炸魚排 (Fried Fish Fillet)",
+        "kcal_cm3": 2.15,
+        "protein_g_cm3": 0.15,
+        "fat_g_cm3": 0.13,
+        "carbs_g_cm3": 0.09
+    },
+    "fish_pan_fried": {
+        "display_name": "煎魚 (Pan-fried Fish)",
+        "kcal_cm3": 1.65,
+        "protein_g_cm3": 0.2,
+        "fat_g_cm3": 0.09,
+        "carbs_g_cm3": 0.005
+    },
+    "squid_celery_stir_fried": {
+        "display_name": "芹菜炒花枝 (Squid w/ Celery)",
+        "kcal_cm3": 0.85,
+        "protein_g_cm3": 0.12,
+        "fat_g_cm3": 0.015,
+        "carbs_g_cm3": 0.055
+    },
+    "shrimp_fried": {
+        "display_name": "炸蝦 (Fried Shrimp)",
+        "kcal_cm3": 2.45,
+        "protein_g_cm3": 0.14,
+        "fat_g_cm3": 0.16,
+        "carbs_g_cm3": 0.11
+    },
+    "eel_braised": {
+        "display_name": "紅燒鰻 (Braised Eel)",
+        "kcal_cm3": 2.25,
+        "protein_g_cm3": 0.17,
+        "fat_g_cm3": 0.15,
+        "carbs_g_cm3": 0.05
+    },
+    "clams_ginger": {
+        "display_name": "薑絲蛤蜊 (Clams w/ Ginger)",
+        "kcal_cm3": 0.45,
+        "protein_g_cm3": 0.07,
+        "fat_g_cm3": 0.005,
+        "carbs_g_cm3": 0.03
+    },
+    "cabbage_stir_fried": {
+        "display_name": "炒高麗菜 (Stir-fried Cabbage)",
+        "kcal_cm3": 0.35,
+        "protein_g_cm3": 0.008,
+        "fat_g_cm3": 0.025,
+        "carbs_g_cm3": 0.032
+    },
+    "water_spinach_stir_fried": {
+        "display_name": "炒空心菜 (Stir-fried Water Spinach)",
+        "kcal_cm3": 0.3,
+        "protein_g_cm3": 0.012,
+        "fat_g_cm3": 0.022,
+        "carbs_g_cm3": 0.018
+    },
+    "spinach_stir_fried": {
+        "display_name": "炒菠菜 (Stir-fried Spinach)",
+        "kcal_cm3": 0.32,
+        "protein_g_cm3": 0.015,
+        "fat_g_cm3": 0.022,
+        "carbs_g_cm3": 0.02
+    },
+    "bok_choy_stir_fried": {
+        "display_name": "炒青江菜 (Stir-fried Bok Choy)",
+        "kcal_cm3": 0.28,
+        "protein_g_cm3": 0.01,
+        "fat_g_cm3": 0.02,
+        "carbs_g_cm3": 0.02
+    },
+    "chinese_cabbage_stir_fried": {
+        "display_name": "炒小白菜 (Stir-fried Chinese Cabbage)",
+        "kcal_cm3": 0.28,
+        "protein_g_cm3": 0.011,
+        "fat_g_cm3": 0.02,
+        "carbs_g_cm3": 0.02
+    },
+    "a_choy_stir_fried": {
+        "display_name": "炒A菜 (Stir-fried A-Choy)",
+        "kcal_cm3": 0.3,
+        "protein_g_cm3": 0.013,
+        "fat_g_cm3": 0.022,
+        "carbs_g_cm3": 0.019
+    },
+    "sweet_potato_leaves": {
+        "display_name": "炒地瓜葉 (Sweet Potato Leaves)",
+        "kcal_cm3": 0.35,
+        "protein_g_cm3": 0.022,
+        "fat_g_cm3": 0.025,
+        "carbs_g_cm3": 0.025
+    },
+    "lettuce_stir_fried": {
+        "display_name": "炒大陸妹/萵苣 (Stir-fried Lettuce)",
+        "kcal_cm3": 0.28,
+        "protein_g_cm3": 0.01,
+        "fat_g_cm3": 0.02,
+        "carbs_g_cm3": 0.021
+    },
+    "amaranth_stir_fried": {
+        "display_name": "炒莧菜 (Stir-fried Amaranth)",
+        "kcal_cm3": 0.3,
+        "protein_g_cm3": 0.018,
+        "fat_g_cm3": 0.022,
+        "carbs_g_cm3": 0.018
+    },
+    "broccoli_stir_fried": {
+        "display_name": "炒花椰菜 (Stir-fried Broccoli)",
+        "kcal_cm3": 0.38,
+        "protein_g_cm3": 0.015,
+        "fat_g_cm3": 0.025,
+        "carbs_g_cm3": 0.035
+    },
+    "cauliflower_stir_fried": {
+        "display_name": "炒白花椰菜 (Stir-fried Cauliflower)",
+        "kcal_cm3": 0.35,
+        "protein_g_cm3": 0.012,
+        "fat_g_cm3": 0.025,
+        "carbs_g_cm3": 0.03
+    },
+    "bitter_gourd_stir_fried": {
+        "display_name": "炒苦瓜 (Stir-fried Bitter Gourd)",
+        "kcal_cm3": 0.3,
+        "protein_g_cm3": 0.008,
+        "fat_g_cm3": 0.018,
+        "carbs_g_cm3": 0.035
+    },
+    "eggplant_braised": {
+        "display_name": "紅燒茄子 (Braised Eggplant)",
+        "kcal_cm3": 0.65,
+        "protein_g_cm3": 0.01,
+        "fat_g_cm3": 0.055,
+        "carbs_g_cm3": 0.04
+    },
+    "loofah_stir_fried": {
+        "display_name": "炒絲瓜 (Stir-fried Loofah)",
+        "kcal_cm3": 0.25,
+        "protein_g_cm3": 0.008,
+        "fat_g_cm3": 0.015,
+        "carbs_g_cm3": 0.025
+    },
+    "celery_stir_fried": {
+        "display_name": "炒芹菜 (Stir-fried Celery)",
+        "kcal_cm3": 0.3,
+        "protein_g_cm3": 0.008,
+        "fat_g_cm3": 0.02,
+        "carbs_g_cm3": 0.03
+    },
+    "bean_sprouts_stir_fried": {
+        "display_name": "炒豆芽菜 (Stir-fried Bean Sprouts)",
+        "kcal_cm3": 0.35,
+        "protein_g_cm3": 0.025,
+        "fat_g_cm3": 0.02,
+        "carbs_g_cm3": 0.03
+    },
+    "corn_stir_fried": {
+        "display_name": "炒玉米 (Stir-fried Corn)",
+        "kcal_cm3": 0.95,
+        "protein_g_cm3": 0.03,
+        "fat_g_cm3": 0.035,
+        "carbs_g_cm3": 0.16
+    },
+    "carrots_stir_fried": {
+        "display_name": "炒紅蘿蔔 (Stir-fried Carrots)",
+        "kcal_cm3": 0.45,
+        "protein_g_cm3": 0.01,
+        "fat_g_cm3": 0.022,
+        "carbs_g_cm3": 0.075
+    },
+    "string_beans_stir_fried": {
+        "display_name": "炒四季豆 (Stir-fried String Beans)",
+        "kcal_cm3": 0.55,
+        "protein_g_cm3": 0.018,
+        "fat_g_cm3": 0.035,
+        "carbs_g_cm3": 0.045
+    },
+    "winter_melon_stir_fried": {
+        "display_name": "炒冬瓜 (Stir-fried Winter Melon)",
+        "kcal_cm3": 0.25,
+        "protein_g_cm3": 0.005,
+        "fat_g_cm3": 0.015,
+        "carbs_g_cm3": 0.03
+    },
+    "bamboo_shoots_stir_fried": {
+        "display_name": "炒竹筍 (Stir-fried Bamboo Shoots)",
+        "kcal_cm3": 0.4,
+        "protein_g_cm3": 0.02,
+        "fat_g_cm3": 0.025,
+        "carbs_g_cm3": 0.035
+    },
+    "okra_blanched": {
+        "display_name": "秋葵 (Okra)",
+        "kcal_cm3": 0.35,
+        "protein_g_cm3": 0.02,
+        "fat_g_cm3": 0.002,
+        "carbs_g_cm3": 0.07
+    },
+    "mapo_tofu": {
+        "display_name": "麻婆豆腐 (Mapo Tofu)",
+        "kcal_cm3": 0.98,
+        "protein_g_cm3": 0.065,
+        "fat_g_cm3": 0.068,
+        "carbs_g_cm3": 0.025
+    },
+    "oil_tofu_braised": {
+        "display_name": "滷油豆腐 (Braised Oil Tofu)",
+        "kcal_cm3": 1.35,
+        "protein_g_cm3": 0.095,
+        "fat_g_cm3": 0.1,
+        "carbs_g_cm3": 0.025
+    },
+    "tofu_braised": {
+        "display_name": "滷豆腐 (Braised Tofu)",
+        "kcal_cm3": 0.9,
+        "protein_g_cm3": 0.085,
+        "fat_g_cm3": 0.045,
+        "carbs_g_cm3": 0.035
+    },
+    "tofu_celery_stir_fried": {
+        "display_name": "豆干炒芹菜 (Tofu w/ Celery)",
+        "kcal_cm3": 1.45,
+        "protein_g_cm3": 0.12,
+        "fat_g_cm3": 0.09,
+        "carbs_g_cm3": 0.045
+    },
+    "egg_steamed": {
+        "display_name": "蒸蛋 (Steamed Egg)",
+        "kcal_cm3": 0.75,
+        "protein_g_cm3": 0.065,
+        "fat_g_cm3": 0.05,
+        "carbs_g_cm3": 0.015
+    },
+    "tomato_egg_scrambled": {
+        "display_name": "番茄炒蛋 (Tomato Scrambled Egg)",
+        "kcal_cm3": 1.05,
+        "protein_g_cm3": 0.038,
+        "fat_g_cm3": 0.075,
+        "carbs_g_cm3": 0.056
+    },
+    "onion_egg_scrambled": {
+        "display_name": "洋蔥炒蛋 (Onion Scrambled Egg)",
+        "kcal_cm3": 1.15,
+        "protein_g_cm3": 0.045,
+        "fat_g_cm3": 0.085,
+        "carbs_g_cm3": 0.06
+    },
+    "egg_fried": {
+        "display_name": "荷包蛋 (Fried Egg)",
+        "kcal_cm3": 1.85,
+        "protein_g_cm3": 0.12,
+        "fat_g_cm3": 0.15,
+        "carbs_g_cm3": 0.01
+    },
+    "preserved_egg_tofu": {
+        "display_name": "皮蛋豆腐 (Preserved Egg w/ Tofu)",
+        "kcal_cm3": 1.05,
+        "protein_g_cm3": 0.085,
+        "fat_g_cm3": 0.065,
+        "carbs_g_cm3": 0.035
+    },
+    "seaweed_stir_fried": {
+        "display_name": "炒海帶 (Stir-fried Seaweed)",
+        "kcal_cm3": 0.45,
+        "protein_g_cm3": 0.015,
+        "fat_g_cm3": 0.02,
+        "carbs_g_cm3": 0.065
+    },
+    "pickled_radish": {
+        "display_name": "醃蘿蔔 (Pickled Radish)",
+        "kcal_cm3": 0.25,
+        "protein_g_cm3": 0.005,
+        "fat_g_cm3": 0.001,
+        "carbs_g_cm3": 0.055
+    },
+    "peanuts_fried": {
+        "display_name": "炸花生 (Fried Peanuts)",
+        "kcal_cm3": 3.45,
+        "protein_g_cm3": 0.15,
+        "fat_g_cm3": 0.31,
+        "carbs_g_cm3": 0.09
+    },
+    "tofu_skin_fried": {
+        "display_name": "炸豆皮 (Fried Tofu Skin)",
+        "kcal_cm3": 3.15,
+        "protein_g_cm3": 0.22,
+        "fat_g_cm3": 0.24,
+        "carbs_g_cm3": 0.05
+    },
+    "sausage_taiwanese": {
+        "display_name": "台式香腸 (Taiwanese Sausage)",
+        "kcal_cm3": 3.75,
+        "protein_g_cm3": 0.14,
+        "fat_g_cm3": 0.32,
+        "carbs_g_cm3": 0.085
+    },
+    "wonton_pork": {
+        "display_name": "餛飩 (Pork Wontons)",
+        "kcal_cm3": 2.1,
+        "protein_g_cm3": 0.105,
+        "fat_g_cm3": 0.08,
+        "carbs_g_cm3": 0.25
+    },
+    "pork_sliced_stir_fried": {
+        "display_name": "炒豬肉片 (Stir-fried Sliced Pork)",
+        "kcal_cm3": 1.9,
+        "protein_g_cm3": 0.17,
+        "fat_g_cm3": 0.13,
+        "carbs_g_cm3": 0.02
+    }
+}
