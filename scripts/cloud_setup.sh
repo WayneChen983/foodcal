@@ -76,6 +76,9 @@ fi
 
 # ── 3. Conda 環境 + PyTorch ──────────────────────────────────
 echo "[3/7] Creating conda env and installing PyTorch (CUDA 12.6)..."
+# Miniconda 2024+ 需先接受 channel ToS（非互動環境會失敗）
+conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main 2>/dev/null || true
+conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r 2>/dev/null || true
 if conda env list | grep -q "^${CONDA_ENV} "; then
   echo "  Env '$CONDA_ENV' already exists, activating..."
 else
