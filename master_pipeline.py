@@ -1,6 +1,7 @@
 import os
 import sys
 import json
+import time
 import torch
 import gc
 import numpy as np
@@ -8,8 +9,8 @@ import cv2
 from PIL import Image
 from scipy.spatial.distance import pdist
 
-# Paths and Config
-BASE_DIR = "/home/bl515-01/sam3"
+# Paths and Config (override with FOODCAL_DIR or SAM3_ROOT env var on cloud)
+BASE_DIR = os.environ.get("FOODCAL_DIR") or os.environ.get("SAM3_ROOT") or os.path.dirname(os.path.abspath(__file__))
 DUSTER_ROOT = os.path.join(BASE_DIR, "duster")
 if DUSTER_ROOT not in sys.path:
     sys.path.append(DUSTER_ROOT)
@@ -70,44 +71,75 @@ def get_distance_to_plane(points, plane_params):
     norm = np.sqrt(a**2 + b**2 + c**2)
     return (a * points[:, 0] + b * points[:, 1] + c * points[:, 2] + d) / norm
 
-def run_master_pipeline(image_files, ref_idx=2):
+def _gpu_peak_gb() -> float:
+    if not torch.cuda.is_available():
+        return 0.0
+    return torch.cuda.max_memory_allocated() / (1024 ** 3)
+
+
+def _reset_gpu_peak() -> None:
+    if torch.cuda.is_available():
+        torch.cuda.reset_peak_memory_stats()
+
+
+def _timed_phase(name: str, timings: dict, mem_peaks: dict, fn):
+    _reset_gpu_peak()
+    t0 = time.perf_counter()
+    result = fn()
+    timings[name] = round(time.perf_counter() - t0, 2)
+    mem_peaks[name] = round(_gpu_peak_gb(), 2)
+    return result
+
+
+def run_master_pipeline(image_files, ref_idx=2, report_path=None):
     """
     image_files: list of image paths (e.g., ['1.jpg', '2.jpg', '3.jpg'])
     ref_idx: index of the reference (top-down) image for segmentation
+    Returns dict with report, volumes, artifacts; None on failure.
     """
     ref_image = image_files[ref_idx]
     image_base = ref_image.rsplit('.', 1)[0]
-    
+    timings: dict[str, float] = {}
+    mem_peaks: dict[str, float] = {}
+    t_total = time.perf_counter()
+
     # --- PHASE 1: Segmentation ---
     print("\n>>> PHASE 1: VLM + SAM Segmentation")
-    food_boxes = get_food_boxes(ref_image)
+    food_boxes = _timed_phase("vlm", timings, mem_peaks, lambda: get_food_boxes(ref_image))
     if not food_boxes:
         print("Warning: No detections, adding manual card box fallback.")
         food_boxes = {"card": []}
     if "card" not in food_boxes:
         food_boxes["card"] = []
-        
-    segment_foods(ref_image, food_boxes)
+
+    _timed_phase("sam3", timings, mem_peaks, lambda: segment_foods(ref_image, food_boxes))
     contours_data = extract_contours(image_base)
     
     if not contours_data:
         print("Error: Failed to obtain contours.")
-        return
+        return None
 
     # --- PHASE 2: 3D Volume Calculation ---
     print("\n>>> PHASE 2: 3D Reconstruction & Volume Analysis")
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     model_name = "naver/DUSt3R_ViTLarge_BaseDecoder_512_dpt"
-    
-    # Load DUSt3R
-    model = AsymmetricCroCo3DStereo.from_pretrained(model_name).to(device)
-    imgs = load_images(image_files, size=512)
-    pairs = make_pairs(imgs, scene_graph='complete', prefilter=None, symmetrize=True)
-    output = inference(pairs, model, device, batch_size=1)
-    
-    scene = global_aligner(output, device=device, mode=GlobalAlignerMode.PointCloudOptimizer)
-    scene.compute_global_alignment(init='mst', niter=300, schedule='linear', lr=0.01)
-    
+
+    def _run_dust3r():
+        model = AsymmetricCroCo3DStereo.from_pretrained(model_name).to(device)
+        imgs = load_images(image_files, size=512)
+        pairs = make_pairs(imgs, scene_graph='complete', prefilter=None, symmetrize=True)
+        output = inference(pairs, model, device, batch_size=1)
+        scene = global_aligner(output, device=device, mode=GlobalAlignerMode.PointCloudOptimizer)
+        scene.compute_global_alignment(init='mst', niter=300, schedule='linear', lr=0.01)
+        return model, scene, imgs
+
+    _reset_gpu_peak()
+    t_dust = time.perf_counter()
+    model, scene, _imgs = _run_dust3r()
+    timings["dust3r"] = round(time.perf_counter() - t_dust, 2)
+    mem_peaks["dust3r"] = round(_gpu_peak_gb(), 2)
+
+    t_vol = time.perf_counter()
     pts3d_all_views = [p.detach().cpu().numpy() for p in scene.get_pts3d()]
     pts3d_ref = pts3d_all_views[ref_idx]
     H_model, W_model = pts3d_ref.shape[:2]
@@ -122,7 +154,7 @@ def run_master_pipeline(image_files, ref_idx=2):
     card_pts = pts3d_ref[card_mask]
     if len(card_pts) < 10:
         print("Error: Card pts missing in 3D scene.")
-        return
+        return None
     model_diagonal = np.max(pdist(card_pts[::max(1, len(card_pts)//500)]))
     cm_per_model_unit = REAL_DIAGONAL_CM / model_diagonal
     print(f"Calibration: 1 unit = {cm_per_model_unit:.4f} cm")
@@ -194,19 +226,25 @@ def run_master_pipeline(image_files, ref_idx=2):
         thickness_map.flat[valid_bins] = f_h[valid_bins]
         print(f"  Result: {food:<12} | Volume: {vol:.2f} cm3")
 
+    timings["volume"] = round(time.perf_counter() - t_vol, 2)
+
     # Cleanup DUSt3R
     del model
     cleanup_gpu()
 
     # --- PHASE 3: Nutrition Calculation ---
     print("\n>>> PHASE 3: Nutrition Mapping")
+    t_nut = time.perf_counter()
     db = load_db(os.path.join(BASE_DIR, "food_nutrition_db.json"))
     report = calculate_nutrition(final_volumes, db)
-    
-    report_path = os.path.join(BASE_DIR, f"master_report_123.json")
-    with open(report_path, 'w') as f:
+    timings["nutrition"] = round(time.perf_counter() - t_nut, 2)
+    timings["total"] = round(time.perf_counter() - t_total, 2)
+    mem_peaks["total"] = round(max(mem_peaks.values(), default=0.0), 2)
+
+    out_path = report_path or os.path.join(BASE_DIR, "master_report_123.json")
+    with open(out_path, 'w') as f:
         json.dump(report, f, indent=2)
-    
+
     print("\n" + "="*60)
     print("           FINAL INTEGRATED NUTRITION REPORT")
     print("="*60)
@@ -223,6 +261,19 @@ def run_master_pipeline(image_files, ref_idx=2):
     t = report["totals"]
     print(f"{'TOTAL':<15} | {'-':>8} | {t['calories_kcal']:>6} | {t['protein_g']:>5} | {t['fat_g']:>5} | {t['carbohydrates_g']:>5}")
     print("="*60)
+
+    return {
+        "report": report,
+        "volumes": {k: round(v, 2) for k, v in final_volumes.items()},
+        "artifacts": {
+            "segmented_labeled": f"{image_base}_segmented_labeled.png",
+            "segmented_clean": f"{image_base}_segmented_clean.png",
+            "color_map": f"{image_base}_color_map.json",
+        },
+        "report_path": out_path,
+        "timings_sec": timings,
+        "gpu_memory_peak_gb": mem_peaks,
+    }
 
 if __name__ == "__main__":
     import sys

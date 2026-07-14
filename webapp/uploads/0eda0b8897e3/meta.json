@@ -1,0 +1,14 @@
+{
+  "job_id": "0eda0b8897e3",
+  "created_at": "2026-07-13T12:41:01.227377+00:00",
+  "image_paths": [
+    "C:\\Users\\bl515-pub\\Downloads\\foodcal2\\webapp\\uploads\\0eda0b8897e3\\left_45.jpeg",
+    "C:\\Users\\bl515-pub\\Downloads\\foodcal2\\webapp\\uploads\\0eda0b8897e3\\right_45.jpeg",
+    "C:\\Users\\bl515-pub\\Downloads\\foodcal2\\webapp\\uploads\\0eda0b8897e3\\top_90.jpeg"
+  ],
+  "volumes": {
+    "chicken": 33.17,
+    "cabbage": 90.56
+  },
+  "demo": true
+}

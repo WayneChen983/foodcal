@@ -125,7 +125,7 @@ def segment_foods(image_path, food_boxes):
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
     import sys
-    SAM3_ROOT = "/home/bl515-01/sam3"
+    SAM3_ROOT = os.environ.get("SAM3_ROOT") or os.environ.get("FOODCAL_DIR") or os.path.dirname(os.path.abspath(__file__))
     if SAM3_ROOT not in sys.path:
         sys.path.insert(0, SAM3_ROOT)
 

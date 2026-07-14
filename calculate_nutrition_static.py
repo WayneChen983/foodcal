@@ -21,12 +21,19 @@ def calculate_nutrition(volumes, db):
     
     # Manual Mapping Overrides for the experiment
     manual_map = {
-        "wontons": "wonton_pork",
+        "salt_pepper_chicken": "salt_pepper_chicken",
+        "chicken": "chicken_leg_fried",
+        "chicken_leg": "chicken_leg_fried",
+        "taro": "taro",
+        "egg": "egg_steamed",
+        "steamed_egg": "egg_steamed",
+        "carrot_egg": "carrot_egg_stir_fried",
+        "green_pepper": "green_pepper_stir_fried",
+        "pepper": "green_pepper_stir_fried",
+        "mapo_tofu": "mapo_tofu",
+        "kimchi": "kimchi_korean",
         "cabbage": "cabbage_stir_fried",
-        "broccoli": "broccoli_stir_fried",
-        "pork": "pork_sliced_stir_fried",
-        "rice": "rice_white",
-        "spinach": "spinach_stir_fried"
+        "bitter_gourd": "bitter_gourd_stir_fried",
     }
     
     for food_label, volume in volumes.items():
