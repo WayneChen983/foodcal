@@ -1,0 +1,27 @@
+{
+  "measured_at": "2026-07-15T16:00:00+00:00",
+  "source": "measured",
+  "device": "NVIDIA RTX PRO 4500 Blackwell",
+  "note": "RunPod 實測；影像為 repo 範例 1001–1003（混合餐盤，非單一標定品項）",
+  "timings_sec": {
+    "vlm": 152.42,
+    "sam3": 28.89,
+    "dust3r": 17.51,
+    "volume": 0.70,
+    "nutrition": 0.01,
+    "total": 199.88
+  },
+  "gpu_memory_peak_gb": {
+    "vlm": 15.94,
+    "sam3": 3.8,
+    "dust3r": 2.58,
+    "volume": 15.94,
+    "nutrition": 15.94,
+    "total": 15.94
+  },
+  "cost_usd": {
+    "RTX PRO 4500 @ 0.74/hr": 0.0411,
+    "formula": "total_sec / 3600 * hourly_usd"
+  },
+  "nutrition_note": "多數 N/A 因 VLM 英文標籤（white rice / lettuce 等）不在 10 項標定資料庫；體積計算仍有效。已強化 label→DB 匹配。"
+}
