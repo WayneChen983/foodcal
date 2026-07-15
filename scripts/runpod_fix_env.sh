@@ -95,7 +95,8 @@ echo "[4/5] Reinstall foodcal (sam3) + core deps..."
 pip install -e "$FOODCAL_DIR" --no-deps
 pip install -r "$FOODCAL_DIR/duster/requirements.txt" 2>/dev/null || true
 pip install transformers accelerate opencv-python-headless scipy matplotlib pillow tqdm qwen-vl-utils einops
-pip install --force-reinstall "numpy==1.26.4"
+# SAM3 需要 numpy<2；opencv 5.x 要求 numpy>=2 → 固定 opencv 4.x
+pip install --force-reinstall "numpy==1.26.4" "opencv-python-headless>=4.8,<5"
 
 if [[ -n "${HF_TOKEN:-}" ]]; then
   hf auth login --token "$HF_TOKEN" 2>/dev/null \
