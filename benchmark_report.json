@@ -1,46 +1,57 @@
 {
-  "measured_at": "2026-07-15T17:10:00+00:00",
+  "measured_at": "2026-07-15T18:00:00+00:00",
   "source": "measured",
   "platform": "RunPod",
-  "device": "NVIDIA RTX PRO 4500 Blackwell",
-  "vram_mb": 32623,
   "images": ["1001.jpg", "1002.jpg", "1003.jpg"],
   "ref_idx": 2,
-  "note": "同一 Python 進程內連續兩次 run_master_pipeline；FOODCAL_KEEP_MODELS=1。影像為混合餐盤範例。",
-  "cold_start": {
-    "timings_sec": {
-      "vlm": 190.72,
-      "sam3": 26.88,
-      "dust3r": 30.56,
-      "volume": 0.87,
-      "nutrition": 0.01,
-      "total": 249.42
+  "note": "同一進程 FOODCAL_KEEP_MODELS=1；warm=第二次推論。",
+  "gpus": {
+    "RTX PRO 4500": {
+      "hourly_usd": 0.74,
+      "cold_start": {
+        "timings_sec": {
+          "vlm": 190.72,
+          "sam3": 26.88,
+          "dust3r": 30.56,
+          "volume": 0.87,
+          "nutrition": 0.01,
+          "total": 249.42
+        },
+        "gpu_memory_peak_gb": { "total": 21.35 },
+        "cost_usd": 0.0513
+      },
+      "warm_cached": {
+        "timings_sec": {
+          "vlm": 10.88,
+          "sam3": 4.48,
+          "dust3r": 4.31,
+          "volume": 0.63,
+          "nutrition": 0.01,
+          "total": 20.61
+        },
+        "gpu_memory_peak_gb": { "total": 21.35 },
+        "cost_usd": 0.0042
+      }
     },
-    "gpu_memory_peak_gb": {
-      "vlm": 15.94,
-      "sam3": 19.24,
-      "dust3r": 21.35,
-      "volume": 21.35,
-      "nutrition": 21.35,
-      "total": 21.35
-    },
-    "cost_usd_at_0.74_per_hr": 0.0513
-  },
-  "warm_cached": {
-    "timings_sec": {
-      "vlm": 10.88,
-      "sam3": 4.48,
-      "dust3r": 4.31,
-      "volume": 0.63,
-      "nutrition": 0.01,
-      "total": 20.61
-    },
-    "gpu_memory_peak_gb": {
-      "total": 21.35
-    },
-    "cost_usd_at_0.74_per_hr": 0.0042,
-    "cache_after": ["dust3r", "sam3", "vlm"]
+    "RTX 4090": {
+      "hourly_usd": 0.60,
+      "warm_cached": {
+        "timings_sec": {
+          "vlm": 8.59,
+          "sam3": 2.02,
+          "dust3r": 4.31,
+          "volume": 0.53,
+          "nutrition": 0.01,
+          "total": 15.69
+        },
+        "cost_usd": 0.0026
+      },
+      "note": "warm_bench.py SUMMARY；cold 未單獨匯出"
+    }
   },
   "formula": "cost_usd = total_sec / 3600 * hourly_usd",
-  "hourly_usd_rtx_pro_4500": 0.74
+  "relative_speed_vs_pro4500_warm": {
+    "RTX PRO 4500": 1.0,
+    "RTX 4090": 1.31
+  }
 }
