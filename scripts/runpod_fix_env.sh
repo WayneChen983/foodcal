@@ -56,9 +56,23 @@ PY
 
 echo ""
 echo "[2/5] numpy 1.26.4 (SAM3 requires numpy<2)..."
+# 损坏的 numpy（无 RECORD）无法用 uninstall，改用 ignore-installed 覆盖
 pip uninstall -y numpy 2>/dev/null || true
-pip install --force-reinstall "numpy==1.26.4"
-python -c "import numpy as np; print(f'  numpy {np.__version__}')"
+pip install --ignore-installed "numpy==1.26.4"
+# 清掉残留的破损 site-packages/numpy（若仍有 None metadata）
+python - <<'PY'
+import site, shutil, pathlib
+for sp in site.getsitepackages():
+    for name in ("numpy", "numpy-None.dist-info", "numpy-2.5.1.dist-info"):
+        p = pathlib.Path(sp) / name
+        # 不删正常的 numpy-1.26.4*
+        if name == "numpy":
+            continue
+        if p.exists():
+            shutil.rmtree(p, ignore_errors=True)
+            print(f"  removed leftover {p}")
+PY
+python -c "import numpy as np; print(f'  numpy {np.__version__}'); assert np.__version__.startswith('1.26')"
 
 echo ""
 echo "[3/5] setuptools..."

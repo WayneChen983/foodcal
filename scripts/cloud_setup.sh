@@ -129,7 +129,7 @@ pip install \
 # qwen-vl-utils 等可能拉高 numpy 至 2.x，SAM3 需要 numpy<2
 echo "[5b] Pinning numpy for SAM3..."
 pip uninstall -y numpy 2>/dev/null || true
-pip install --force-reinstall "numpy==1.26.4"
+pip install --ignore-installed "numpy==1.26.4"
 python - <<'PY'
 import numpy as np
 v = tuple(int(x) for x in np.__version__.split(".")[:2])
