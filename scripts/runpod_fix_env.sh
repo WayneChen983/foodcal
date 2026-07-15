@@ -56,23 +56,35 @@ PY
 
 echo ""
 echo "[2/5] numpy 1.26.4 (SAM3 requires numpy<2)..."
-# 损坏的 numpy（无 RECORD）无法用 uninstall，改用 ignore-installed 覆盖
-pip uninstall -y numpy 2>/dev/null || true
-pip install --ignore-installed "numpy==1.26.4"
-# 清掉残留的破损 site-packages/numpy（若仍有 None metadata）
+# 彻底清除损坏的 numpy（可 import 但 metadata=None 会导致 transformers 失败）
 python - <<'PY'
-import site, shutil, pathlib
-for sp in site.getsitepackages():
-    for name in ("numpy", "numpy-None.dist-info", "numpy-2.5.1.dist-info"):
-        p = pathlib.Path(sp) / name
-        # 不删正常的 numpy-1.26.4*
-        if name == "numpy":
-            continue
-        if p.exists():
+import site, shutil, pathlib, glob
+roots = list(site.getsitepackages())
+try:
+    roots.append(site.getusersitepackages())
+except Exception:
+    pass
+for sp in roots:
+    sp = pathlib.Path(sp)
+    if not sp.is_dir():
+        continue
+    for p in sp.glob("numpy*"):
+        print(f"  removing {p}")
+        if p.is_dir():
             shutil.rmtree(p, ignore_errors=True)
-            print(f"  removed leftover {p}")
+        else:
+            p.unlink(missing_ok=True)
 PY
-python -c "import numpy as np; print(f'  numpy {np.__version__}'); assert np.__version__.startswith('1.26')"
+pip uninstall -y numpy 2>/dev/null || true
+pip install --no-cache-dir "numpy==1.26.4"
+python - <<'PY'
+import numpy as np
+from importlib.metadata import version
+print(f"  numpy {np.__version__}")
+print(f"  metadata {version('numpy')}")
+assert np.__version__.startswith("1.26")
+assert version("numpy").startswith("1.26")
+PY
 
 echo ""
 echo "[3/5] setuptools..."
