@@ -113,7 +113,14 @@ pip install \
 
 # qwen-vl-utils 等可能拉高 numpy 至 2.x，SAM3 需要 numpy<2
 echo "[5b] Pinning numpy + setuptools for SAM3..."
-pip install "numpy>=1.26,<2" "setuptools>=69"
+pip install --ignore-installed --no-deps "numpy>=1.26,<2"
+pip install "setuptools>=69"
+python - <<'PY'
+import numpy as np
+v = tuple(int(x) for x in np.__version__.split(".")[:2])
+assert v < (2, 0), f"numpy {np.__version__} too new for sam3"
+print(f"  numpy {np.__version__} OK")
+PY
 echo "[6/7] HuggingFace authentication..."
 if [[ -n "${HF_TOKEN:-}" ]]; then
   hf auth login --token "$HF_TOKEN" --add-to-git-credential 2>/dev/null \
