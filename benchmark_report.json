@@ -64,10 +64,22 @@
     "NVIDIA L4": {
       "hourly_usd": 0.59,
       "vram_gb_reported": 22.03,
+      "cold_first_run": {
+        "timings_sec": {
+          "vlm": 161.74,
+          "sam3": 26.72,
+          "dust3r": 26.35,
+          "volume": 1.07,
+          "nutrition": 0.02,
+          "total": 216.2
+        },
+        "cost_usd": 0.0354,
+        "note": "同一進程第一次完整管線可跑完（含模型載入）；總時約 216.2 秒。"
+      },
       "warm_keep_models": {
-        "result": "CUDA_OOM",
-        "note": "FOODCAL_KEEP_MODELS=1 時 Qwen2.5-VL 前向失敗；進程已用約 21.98 GiB / 22.03 GiB，再要 84 MiB 失敗。結論：L4 不足以三模型常駐。",
-        "error": "torch.OutOfMemoryError in qwen2_5_vl MLP down_proj"
+        "result": "CUDA_OOM_CONNECTION_CLOSED",
+        "note": "RUN2 FOODCAL_KEEP_MODELS=1 時於「Reusing cached Qwen2.5-VL-7B」後 OOM／連線中斷。結論：L4 可完成單次序列推論，但不足以三模型常駐後再推論。",
+        "error": "torch.OutOfMemoryError / Connection Closed during warm VLM forward"
       }
     }
   },
