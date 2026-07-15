@@ -75,7 +75,9 @@ else
 fi
 
 # ── 3. Conda 環境 + PyTorch ──────────────────────────────────
-echo "[3/7] Creating conda env and installing PyTorch (CUDA 12.6)..."
+GPU_NAME="$(nvidia-smi --query-gpu=name --format=csv,noheader | head -1 || echo unknown)"
+echo "[3/7] Creating conda env and installing PyTorch..."
+echo "  Detected GPU: $GPU_NAME"
 # Miniconda 2024+ 需先接受 channel ToS（非互動環境會失敗）
 conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main 2>/dev/null || true
 conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r 2>/dev/null || true
@@ -86,14 +88,25 @@ else
 fi
 conda activate "$CONDA_ENV"
 
-pip install --upgrade pip wheel setuptools
-pip install torch==2.7.0 torchvision torchaudio --index-url https://download.pytorch.org/whl/cu126
+pip install --upgrade pip wheel "setuptools>=69,<81"
+
+# Blackwell (RTX PRO 4500 / 50xx) 需要 CUDA 12.8；cu126 只支援到 sm_90
+if echo "$GPU_NAME" | grep -qiE "PRO 4500|5090|5080|5070|5060|5050|Blackwell"; then
+  echo "  Blackwell GPU → PyTorch cu128"
+  pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu128
+else
+  echo "  Standard GPU → PyTorch cu126"
+  pip install torch==2.7.0 torchvision torchaudio --index-url https://download.pytorch.org/whl/cu126
+fi
 
 python - <<'PY'
 import torch
 print(f"PyTorch {torch.__version__}, CUDA available: {torch.cuda.is_available()}")
 if torch.cuda.is_available():
-    print(f"GPU: {torch.cuda.get_device_name(0)}")
+    cap = torch.cuda.get_device_capability(0)
+    print(f"GPU: {torch.cuda.get_device_name(0)} (sm_{cap[0]}{cap[1]})")
+    torch.zeros(1, device="cuda")
+    print("CUDA tensor test OK")
 PY
 
 # ── 4. SAM3 ──────────────────────────────────────────────────
@@ -112,9 +125,9 @@ pip install \
   scipy matplotlib pillow tqdm
 
 # qwen-vl-utils 等可能拉高 numpy 至 2.x，SAM3 需要 numpy<2
-echo "[5b] Pinning numpy + setuptools for SAM3..."
-pip install --ignore-installed --no-deps "numpy>=1.26,<2"
-pip install --force-reinstall "setuptools>=69,<81"
+echo "[5b] Pinning numpy for SAM3..."
+pip uninstall -y numpy 2>/dev/null || true
+pip install --force-reinstall "numpy==1.26.4"
 python - <<'PY'
 import numpy as np
 v = tuple(int(x) for x in np.__version__.split(".")[:2])
