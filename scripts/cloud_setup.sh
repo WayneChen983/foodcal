@@ -90,13 +90,15 @@ conda activate "$CONDA_ENV"
 
 pip install --upgrade pip wheel "setuptools>=69,<81"
 
-# Blackwell (RTX PRO 4500 / 50xx) 需要 CUDA 12.8；cu126 只支援到 sm_90
-if echo "$GPU_NAME" | grep -qiE "PRO 4500|5090|5080|5070|5060|5050|Blackwell"; then
+# Blackwell (RTX PRO 4000/4500 / 50xx) 需要 CUDA 12.8；cu126 只支援到 sm_90
+# 必须先 uninstall，否则 pip 会保留旧的 cu126
+pip uninstall -y torch torchvision torchaudio 2>/dev/null || true
+if echo "$GPU_NAME" | grep -qiE "PRO 4000|PRO 4500|5090|5080|5070|5060|5050|Blackwell"; then
   echo "  Blackwell GPU → PyTorch cu128"
-  pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu128
+  pip install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu128
 else
   echo "  Standard GPU → PyTorch cu126"
-  pip install torch==2.7.0 torchvision torchaudio --index-url https://download.pytorch.org/whl/cu126
+  pip install --no-cache-dir torch==2.7.0 torchvision torchaudio --index-url https://download.pytorch.org/whl/cu126
 fi
 
 python - <<'PY'

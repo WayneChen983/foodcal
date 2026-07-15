@@ -37,11 +37,15 @@ echo "[info] GPU: $GPU_NAME"
 echo ""
 echo "[1/5] PyTorch with CUDA 12.8 (Blackwell sm_120)..."
 pip install --upgrade pip wheel
-pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu128
+# 必须先卸掉 cu126，否则 pip 会认为 torch 已安装而跳过
+pip uninstall -y torch torchvision torchaudio 2>/dev/null || true
+pip install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu128
 
 python - <<'PY'
 import torch
 print(f"  torch {torch.__version__}, cuda={torch.cuda.is_available()}")
+if "+cu126" in torch.__version__:
+    raise SystemExit("ERROR: still cu126 — Blackwell needs cu128. Re-run fix.")
 if not torch.cuda.is_available():
     raise SystemExit("CUDA not available")
 cap = torch.cuda.get_device_capability(0)
