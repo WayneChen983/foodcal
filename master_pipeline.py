@@ -16,7 +16,7 @@ if DUSTER_ROOT not in sys.path:
     sys.path.append(DUSTER_ROOT)
 
 from auto_pipeline import get_food_boxes, segment_foods, cleanup_gpu
-from dust3r.model import AsymmetricCroCo3DStereo
+from model_cache import get_dust3r, keep_models, release
 from dust3r.utils.image import load_images
 from dust3r.image_pairs import make_pairs
 from dust3r.inference import inference
@@ -122,10 +122,9 @@ def run_master_pipeline(image_files, ref_idx=2, report_path=None):
     # --- PHASE 2: 3D Volume Calculation ---
     print("\n>>> PHASE 2: 3D Reconstruction & Volume Analysis")
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
-    model_name = "naver/DUSt3R_ViTLarge_BaseDecoder_512_dpt"
 
     def _run_dust3r():
-        model = AsymmetricCroCo3DStereo.from_pretrained(model_name).to(device)
+        model = get_dust3r(device)
         imgs = load_images(image_files, size=512)
         pairs = make_pairs(imgs, scene_graph='complete', prefilter=None, symmetrize=True)
         output = inference(pairs, model, device, batch_size=1)
@@ -228,9 +227,12 @@ def run_master_pipeline(image_files, ref_idx=2, report_path=None):
 
     timings["volume"] = round(time.perf_counter() - t_vol, 2)
 
-    # Cleanup DUSt3R
-    del model
-    cleanup_gpu()
+    # Keep DUSt3R weights if caching; otherwise free VRAM
+    del scene
+    if not keep_models():
+        release("dust3r")
+    else:
+        cleanup_gpu()
 
     # --- PHASE 3: Nutrition Calculation ---
     print("\n>>> PHASE 3: Nutrition Mapping")

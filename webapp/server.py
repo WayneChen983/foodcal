@@ -55,6 +55,14 @@ def _utc_now() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
+def _model_cache_status() -> dict:
+    try:
+        from model_cache import status
+        return status()
+    except Exception:
+        return {"keep_models": None, "cached": []}
+
+
 def _load_food_db() -> dict:
     path = ROOT / "food_nutrition_db.json"
     with open(path, encoding="utf-8") as f:
@@ -120,6 +128,17 @@ def _run_pipeline(image_paths: list[str], job_dir: Path) -> dict:
 async def lifespan(_app: FastAPI):
     UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
+    demo = os.environ.get("FOODCAL_DEMO", "").strip().lower() in ("1", "true", "yes")
+    remote = _remote_api_base()
+    preload = os.environ.get("FOODCAL_PRELOAD", "1").strip().lower() not in ("0", "false", "no")
+    if preload and not demo and not remote:
+        os.environ.setdefault("FOODCAL_KEEP_MODELS", "1")
+        print("[startup] Preloading models into GPU (FOODCAL_KEEP_MODELS=1)...")
+        try:
+            from model_cache import preload_all
+            preload_all()
+        except Exception as exc:
+            print(f"[startup] Preload skipped / failed: {exc}")
     yield
 
 
@@ -185,6 +204,8 @@ async def health():
         "remote_api": False,
         "pipeline_views": list(VIEW_ORDER),
         "ref_view": VIEW_ORDER[REF_IDX],
+        "keep_models": os.environ.get("FOODCAL_KEEP_MODELS", "1"),
+        "model_cache": _model_cache_status(),
     }
 
 

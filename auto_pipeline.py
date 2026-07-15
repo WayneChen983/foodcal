@@ -18,19 +18,11 @@ def cleanup_gpu():
 def get_food_boxes(image_path):
     print("\n[Stage 1] Analyzing image with VLM (with bounding boxes)...")
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    MODEL_ID = "Qwen/Qwen2.5-VL-7B-Instruct"
 
-    print(f"[VLM] Loading {MODEL_ID} ...")
-    from transformers import Qwen2_5_VLForConditionalGeneration, AutoProcessor
     from qwen_vl_utils import process_vision_info
+    from model_cache import get_vlm, keep_models, release
 
-    model = Qwen2_5_VLForConditionalGeneration.from_pretrained(
-        MODEL_ID,
-        torch_dtype=torch.float16,
-        device_map="auto",
-    )
-    processor = AutoProcessor.from_pretrained(MODEL_ID)
-    print("Qwen model loaded.")
+    model, processor = get_vlm()
 
     image = Image.open(image_path).convert("RGB")
     W, H = image.size
@@ -102,10 +94,11 @@ Where x1,y1 = top-left corner, x2,y2 = bottom-right corner, all in pixels."""
 
     print(f"Detected food boxes: {food_boxes}")
 
-    del model
-    del processor
     del inputs
-    cleanup_gpu()
+    if not keep_models():
+        release("vlm")
+    else:
+        cleanup_gpu()  # free activation tensors only; keep weights
 
     return food_boxes
 
@@ -122,36 +115,16 @@ def xyxy_to_cxcywh_norm(x1, y1, x2, y2, img_w, img_h):
 
 def segment_foods(image_path, food_boxes):
     print("\n[Stage 2] Segmenting with SAM3...")
-    device = "cuda" if torch.cuda.is_available() else "cpu"
 
     import sys
     SAM3_ROOT = os.environ.get("SAM3_ROOT") or os.environ.get("FOODCAL_DIR") or os.path.dirname(os.path.abspath(__file__))
     if SAM3_ROOT not in sys.path:
         sys.path.insert(0, SAM3_ROOT)
 
-    from sam3.model_builder import build_sam3_image_model
-    from sam3.model.sam3_image_processor import Sam3Processor
     import cv2
-    
-    print("Loading SAM3 model...")
-    
-    _bpe_candidates = [
-        os.path.join(SAM3_ROOT, "sam3", "assets", "bpe_simple_vocab_16e6.txt.gz"),
-        os.path.join(SAM3_ROOT, "assets", "bpe_simple_vocab_16e6.txt.gz"),
-    ]
-    bpe_path = next((p for p in _bpe_candidates if os.path.exists(p)), None)
-    
-    torch.backends.cuda.matmul.allow_tf32 = True
-    torch.backends.cudnn.allow_tf32 = True
+    from model_cache import get_sam3, keep_models, release
 
-    if device == "cuda":
-        torch.autocast("cuda", dtype=torch.bfloat16).__enter__()
-
-    model = build_sam3_image_model(bpe_path=bpe_path)
-    model.to(device)
-    model.eval()
-    
-    processor = Sam3Processor(model, confidence_threshold=0.3, device=device)
+    model, processor, device = get_sam3()
     
     image = Image.open(image_path).convert("RGB")
     img_w, img_h = image.size
@@ -271,11 +244,12 @@ def segment_foods(image_path, food_boxes):
         json.dump(food_color_map, f, indent=2)
     print(f"Saved color map       -> {color_map_path}")
 
-    del model
-    del processor
     if 'inference_state' in locals():
         del inference_state
-    cleanup_gpu()
+    if not keep_models():
+        release("sam3")
+    else:
+        cleanup_gpu()
     plt.close('all')
 
 def run():

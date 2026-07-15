@@ -30,6 +30,8 @@ fi
 
 cd "$FOODCAL_DIR"
 export FOODCAL_DIR
+export FOODCAL_KEEP_MODELS=1
+export FOODCAL_PRELOAD=1
 unset FOODCAL_DEMO
 unset FOODCAL_REMOTE_API
 
@@ -37,6 +39,8 @@ echo "=============================================="
 echo " FoodCal Web API (GPU)"
 echo " Directory: $FOODCAL_DIR"
 echo " Port:      $WEBAPP_PORT"
+echo " Keep models: FOODCAL_KEEP_MODELS=$FOODCAL_KEEP_MODELS"
+echo " Preload:     FOODCAL_PRELOAD=$FOODCAL_PRELOAD"
 echo "=============================================="
 
 pip install -q -r webapp/requirements.txt
