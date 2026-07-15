@@ -111,7 +111,9 @@ pip install \
   opencv-python-headless \
   scipy matplotlib pillow tqdm
 
-# ── 6. HuggingFace 登入 ──────────────────────────────────────
+# qwen-vl-utils 等可能拉高 numpy 至 2.x，SAM3 需要 numpy<2
+echo "[5b] Pinning numpy + setuptools for SAM3..."
+pip install "numpy>=1.26,<2" "setuptools>=69"
 echo "[6/7] HuggingFace authentication..."
 if [[ -n "${HF_TOKEN:-}" ]]; then
   hf auth login --token "$HF_TOKEN" --add-to-git-credential 2>/dev/null \
