@@ -1,5 +1,5 @@
 {
-  "measured_at": "2026-07-15T18:00:00+00:00",
+  "measured_at": "2026-07-15T18:30:00+00:00",
   "source": "measured",
   "platform": "RunPod",
   "images": ["1001.jpg", "1002.jpg", "1003.jpg"],
@@ -45,13 +45,27 @@
           "total": 15.69
         },
         "cost_usd": 0.0026
-      },
-      "note": "warm_bench.py SUMMARY；cold 未單獨匯出"
+      }
+    },
+    "RTX 5090": {
+      "hourly_usd": 0.99,
+      "warm_cached": {
+        "timings_sec": {
+          "vlm": 6.17,
+          "sam3": 2.31,
+          "dust3r": 3.9,
+          "volume": 0.42,
+          "nutrition": 0.01,
+          "total": 13.19
+        },
+        "cost_usd": 0.0036
+      }
     }
   },
   "formula": "cost_usd = total_sec / 3600 * hourly_usd",
   "relative_speed_vs_pro4500_warm": {
     "RTX PRO 4500": 1.0,
-    "RTX 4090": 1.31
+    "RTX 4090": 1.31,
+    "RTX 5090": 1.56
   }
 }
