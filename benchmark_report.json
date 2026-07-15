@@ -60,6 +60,15 @@
         },
         "cost_usd": 0.0036
       }
+    },
+    "NVIDIA L4": {
+      "hourly_usd": 0.59,
+      "vram_gb_reported": 22.03,
+      "warm_keep_models": {
+        "result": "CUDA_OOM",
+        "note": "FOODCAL_KEEP_MODELS=1 時 Qwen2.5-VL 前向失敗；進程已用約 21.98 GiB / 22.03 GiB，再要 84 MiB 失敗。結論：L4 不足以三模型常駐。",
+        "error": "torch.OutOfMemoryError in qwen2_5_vl MLP down_proj"
+      }
     }
   },
   "formula": "cost_usd = total_sec / 3600 * hourly_usd",
